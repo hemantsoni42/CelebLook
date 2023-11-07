@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.4/lottie.min.js"></script>
+    <title>CeleLook</title>
+</head>
+<body>
+    <img src="../static/logo.svg" alt="Logo" id="logo">
+    <div class="container">
+        <form class="container-form" method="POST" enctype="multipart/form-data">
+            <div id="selected-image-container" style="display: none;">
+                <img id="selected-image" src="#" alt="Selected Image" width="300" height="300">
+                <br>
+                <label for="file-input" id="re-upload-label" class="re-upload-label">Re-upload</label>
+            </div>
+            <div id="upload-container">
+                <input type="file" id="file-input" name="image" accept="image/*" required style="display: none">
+                <label for="file-input">
+                    <img src="../static/upload.svg" alt="Upload Image" id="upload-image">
+                    <p id="upload-text">Upload your image</p>
+                </label>
+            </div>
+            <button type="submit">Predict</button>
+        </form>
+        <div id="loading-animation"></div>
+    </div>
+    <script>
+        const animationContainer = document.getElementById('loading-animation');
+        const animationFiles = [
+            'animation1.json',
+            'animation2.json',
+            'animation3.json',
+            'animation4.json',
+        ];
+        const randomAnimationPath = animationFiles[Math.floor(Math.random() * animationFiles.length)];
+        
+        const anim = lottie.loadAnimation({
+            container: animationContainer,
+            renderer: 'svg',
+            loop: true,
+            autoplay: false,
+            path: '../static/' + randomAnimationPath,
+        });
+    
+        const form = document.querySelector('form');
+        const fileInput = document.getElementById('file-input');
+        const selectedImageContainer = document.getElementById('selected-image-container');
+        const reUploadLabel = document.getElementById('re-upload-label');
+        const uploadContainer = document.getElementById('upload-container');
+
+        fileInput.addEventListener('change', function() {
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    selectedImageContainer.style.display = 'block';
+                    document.getElementById('selected-image').src = e.target.result;
+                    uploadContainer.style.display = 'none';
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
+
+        form.addEventListener('submit', function (e) {
+            animationContainer.style.display = 'block';
+            anim.play();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Celebrity Predictor Result</title>
+</head>
+
+<body>
+    <a href="/"><img src="../static/logo.svg" alt="Logo" id="logo"></a>
+    
+    <h2>Top Celebrity Lookalikes</h2>
+    <div class="celebrity-container">
+        {% if result == "No face is detected" %}
+        <p>No face is detected</p>
+        {% else %}
+        {% for image, name in image_data %}
+        <div class="celebrity">
+            <img src="{{ image }}" alt="{{ name }}">
+            <p>{{ name }}</p>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+</body>
+
+</html>
